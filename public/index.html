@@ -1,187 +1,432 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MEHERIN ONLINE CENTER</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    .card {
-      background: #1e1e1e;
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      text-align: center;
-      max-width: 420px;
-      width: 100%;
-    }
-    .profile-img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #36d1dc;
-      margin-bottom: 12px;
-    }
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-    .social-links a {
-      color: #36d1dc;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-    }
-    .social-links a:hover {
-      text-decoration: underline;
-    }
-    .upload-area {
-      border: 2px dashed #444;
-      padding: 25px 15px;
-      border-radius: 10px;
-      margin: 20px 0;
-      cursor: pointer;
-      background: #252525;
-    }
-    .upload-area:hover {
-      border-color: #36d1dc;
-    }
-    .btn-submit {
-      background: linear-gradient(90deg, #36d1dc, #5b86e5);
-      border: none;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 25px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
-    .btn-submit:hover {
-      opacity: 0.9;
-    }
-    .success-container {
-      display: none;
-    }
-    .check-icon {
-      background-color: #4a2e5c;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto 20px auto;
-      font-size: 28px;
-      color: #d8b4fe;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meherin Online Center</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0d0e12;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px 10px;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 500px;
+            padding: 2px;
+            background: linear-gradient(135deg, #e91e63, #9c27b0, #2196f3, #00bcd4);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .container {
+            width: 100%;
+            background: #181920;
+            border-radius: 18px;
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 25px;
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        /* Top Banner - Fixed white edges by matching dark background */
+        .top-banner {
+            width: 100%;
+            background-color: #181920;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #2d2e38;
+            overflow: hidden;
+        }
+
+        .top-banner img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .header-section {
+            background: linear-gradient(180deg, #151722, #1f2232);
+            padding: 25px 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid #2a2d3d;
+        }
+
+        .circle-logo-container {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2196f3, #e91e63);
+            padding: 3px;
+            box-shadow: 0 0 20px rgba(33, 150, 243, 0.4);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .circle-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background-color: #21232d;
+        }
+
+        .header-section h1 {
+            font-size: 25px;
+            margin-bottom: 8px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.8px;
+        }
+
+        .header-section p {
+            font-size: 16px;
+            color: #00e5ff;
+            font-weight: 600;
+            line-height: 1.4;
+            max-width: 420px;
+        }
+
+        .content {
+            padding: 25px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: 800;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #3a3b4a;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            background-color: #21232d;
+            color: #ffffff;
+        }
+
+        .error-border {
+            border-color: #ff4d4d !important;
+            background-color: #2c1a1d !important;
+        }
+
+        .error-message {
+            display: none;
+            background-color: #3b191e;
+            color: #ff6b6b;
+            border: 1px solid #7a252b;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(90deg, #2196f3, #e91e63);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 19px;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-success-loading {
+            background: linear-gradient(90deg, #2e7d32, #4caf50) !important;
+            cursor: not-allowed;
+        }
+
+        .btn-error-flash {
+            background: linear-gradient(90deg, #d32f2f, #f44336) !important;
+        }
+
+        /* Success Screen Styling */
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 35px 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            margin: 25px 20px;
+        }
+
+        .checkmark-svg {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+        }
+
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke: #1b5e20;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke: #1b5e20;
+            stroke-width: 3;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+        }
+
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .success-box h2 {
+            color: #1b5e20;
+            font-size: 32px;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        /* Dark Green Success Text */
+        .success-msg-main {
+            color: #1b5e20;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* Animated Auto-Print Instruction Text */
+        .success-msg-animate {
+            color: #000000;
+            font-size: 16px;
+            font-weight: 700;
+            animation: textPulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.98); }
+        }
+
+        .contact-section {
+            text-align: center;
+            padding: 18px 10px 10px 10px;
+            border-top: 1px solid #2a2b36;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .call-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #0088cc;
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+        }
+
+        .social-title {
+            font-size: 16px;
+            color: #e1bee7;
+            font-weight: 700;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            color: white;
+            font-size: 22px;
+            text-decoration: none;
+        }
+
+        .whatsapp { background-color: #25d366; }
+        .facebook { background-color: #1877f2; }
+        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    </style>
 </head>
 <body>
 
-  <div class="card">
-    <!-- Header Section -->
-    <img src="profile.jpg" alt="Profile Photo" class="profile-img" onerror="this.src='https://via.placeholder.com/90?text=Logo'">
-    <h2 style="margin: 5px 0 10px 0;">MEHERIN ONLINE CENTER</h2>
-    
-    <div class="social-links">
-      <a href="https://facebook.com/mosharaf.pathan.7" target="_blank">Facebook</a>
-      <a href="https://instagram.com/mosharafpathan" target="_blank">Instagram</a>
-      <a href="https://wa.me/8346042954" target="_blank">WhatsApp</a>
-    </div>
+    <div class="wrapper">
+        <div class="container" id="mainContainer">
+            
+            <div class="top-banner">
+                <img src="banner.jpg" alt="Meherin Online Center Banner" onerror="this.style.display='none'">
+            </div>
 
-    <!-- Main Upload Form -->
-    <div id="formContainer">
-      <p style="margin-bottom: 5px; font-weight: bold;">আপনার ফাইল এখানে UPLOAD করুন</p>
-      <p style="font-size: 12px; color: #aaa; margin-top: 0;">আপনার ফাইলটি জমা হবার পর অটোমেটিক প্রিন্ট হয়ে যাবে</p>
+            <div class="header-section" id="headerSection">
+                <div class="circle-logo-container">
+                    <img src="profile.jpg" alt="User Photo" onerror="this.src='banner.jpg'; this.onerror=null;">
+                </div>
+                <h1>MEHERIN ONLINE CENTER</h1>
+                <p>অটোমেটিক প্রিন্ট করার জন্য আপনার ফাইলটি নিচে UPLOAD করুন</p>
+            </div>
 
-      <form id="uploadForm">
-        <div class="upload-area" onclick="document.getElementById('fileInput').click();">
-          <input type="file" id="fileInput" required style="display: none;">
-          <label id="fileLabel" style="cursor: pointer;">📁 Choose or Drag & Drop a File</label>
+            <div class="content" id="form-container">
+                <div class="error-message" id="errorBox">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="errorText">দয়া করে একটি ফাইল নির্বাচন করুন!</span>
+                </div>
+
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label for="file">ফাইল নির্বাচন করুন (Select File):</label>
+                        <input type="file" id="file">
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">ফাইল আপলোড করুন</button>
+                </form>
+            </div>
+
+            <div class="success-box" id="successScreen">
+                <!-- Dark Green Animated Checkmark -->
+                <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+                <h2>ধন্যবাদ!</h2>
+                <div class="success-msg-main">আপনার ফাইলটি সফলভাবে জমা হয়ে গেছে।</div>
+                <div class="success-msg-animate">একটু ধৈর্য্য ধরুন আপনার ফাইলটি অটোমেটিক প্রিন্ট হচ্ছে...</div>
+            </div>
+
+            <div class="contact-section">
+                <a href="tel:+918346042954" class="call-btn">
+                    <i class="fas fa-phone-alt"></i> ফোন করুন
+                </a>
+
+                <div class="social-title">আমাদের সাথে সামাজিক মাধ্যমে যুক্ত থাকুন</div>
+                
+                <div class="social-icons">
+                    <a href="https://wa.me/+918346042954" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://facebook.com/mosharaf.pathan.7" target="_blank" class="social-icon facebook" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://instagram.com/mosharafpathan" target="_blank" class="social-icon instagram" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
         </div>
-        <button type="submit" class="btn-submit" id="submitBtn">SUBMIT</button>
-      </form>
-      <div id="status" style="margin-top: 15px; font-size: 14px;"></div>
     </div>
 
-    <!-- Success Screen -->
-    <div id="successContainer" class="success-container">
-      <div class="check-icon">✓</div>
-      <h2 style="margin-bottom: 10px;">ধন্যবাদ</h2>
-      <p style="color: #ccc; font-size: 15px; line-height: 1.5;">একটু ধৈর্য ধরুন আপনার ফাইলটি প্রিন্ট হতে শুরু হয়ে গেছে।</p>
-    </div>
-  </div>
+    <script>
+        const form = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('file');
+        const errorBox = document.getElementById('errorBox');
+        const mainContainer = document.getElementById('mainContainer');
+        const submitBtn = document.getElementById('submitBtn');
+        const headerSection = document.getElementById('headerSection');
 
-  <script>
-    const fileInput = document.getElementById('fileInput');
-    const fileLabel = document.getElementById('fileLabel');
-    const form = document.getElementById('uploadForm');
-    const status = document.getElementById('status');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    const formContainer = document.getElementById('formContainer');
-    const successContainer = document.getElementById('successContainer');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files.length > 0) {
-        fileLabel.textContent = `Selected: ${fileInput.files[0].name}`;
-        status.textContent = '';
-      }
-    });
+            if (!fileInput.files || fileInput.files.length === 0) {
+                errorBox.style.display = 'flex';
+                fileInput.classList.add('error-border');
+                
+                submitBtn.classList.add('btn-error-flash');
+                setTimeout(() => {
+                    submitBtn.classList.remove('btn-error-flash');
+                }, 300);
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+                mainContainer.classList.add('shake');
+                setTimeout(() => {
+                    mainContainer.classList.remove('shake');
+                }, 400);
+                return;
+            }
 
-      if (!fileInput.files || fileInput.files.length === 0) {
-        status.textContent = '❌ অনুগ্রহ করে প্রথমে একটি ফাইল সিলেক্ট করুন!';
-        status.style.color = '#ff6b6b';
-        return;
-      }
+            errorBox.style.display = 'none';
+            fileInput.classList.remove('error-border');
 
-      status.textContent = 'Uploading... Please wait.';
-      status.style.color = 'yellow';
-      submitBtn.disabled = true;
+            submitBtn.classList.add('btn-success-loading');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ফাইল আপলোড হচ্ছে...';
+            submitBtn.disabled = true;
 
-      const formData = new FormData();
-      formData.append('file', fileInput.files[0]);
-
-      try {
-        const response = await fetch('/upload', {
-          method: 'POST',
-          body: formData
+            setTimeout(() => {
+                headerSection.style.display = 'none';
+                document.getElementById('form-container').style.display = 'none';
+                document.getElementById('successScreen').style.display = 'block';
+            }, 1200);
         });
 
-        const result = await response.json();
-        if (result.success) {
-          formContainer.style.display = 'none';
-          successContainer.style.display = 'block';
-        } else {
-          status.textContent = '❌ Upload failed: ' + result.error;
-          status.style.color = '#ff6b6b';
-          submitBtn.disabled = false;
-        }
-      } catch (err) {
-        status.textContent = '❌ Server Error!';
-        status.style.color = '#ff6b6b';
-        submitBtn.disabled = false;
-      }
-    });
-  </script>
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                errorBox.style.display = 'none';
+                fileInput.classList.remove('error-border');
+            }
+        });
+    </script>
 </body>
 </html>
