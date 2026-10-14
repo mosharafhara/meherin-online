@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #0d0e12;
+            background-color: #000000;
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -30,12 +30,12 @@
             padding: 2px;
             background: linear-gradient(135deg, #e91e63, #9c27b0, #2196f3, #00bcd4);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
         }
 
         .container {
             width: 100%;
-            background: #181920;
+            background: #0a0b0e;
             border-radius: 18px;
             overflow: hidden;
             text-align: center;
@@ -52,15 +52,14 @@
             40%, 80% { transform: translateX(10px); }
         }
 
-        /* Top Banner - Fixed white edges by matching dark background */
         .top-banner {
             width: 100%;
-            background-color: #181920;
+            background-color: #0a0b0e;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 1px solid #2d2e38;
+            border-bottom: 1px solid #1f222e;
             overflow: hidden;
         }
 
@@ -72,12 +71,12 @@
         }
 
         .header-section {
-            background: linear-gradient(180deg, #151722, #1f2232);
+            background: #000000;
             padding: 25px 15px 15px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-bottom: 1px solid #2a2d3d;
+            border-bottom: 1px solid #1f222e;
         }
 
         .circle-logo-container {
@@ -99,7 +98,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            background-color: #21232d;
+            background-color: #12141c;
         }
 
         .header-section h1 {
@@ -139,11 +138,11 @@
         input[type="file"] {
             width: 100%;
             padding: 14px;
-            border: 1px solid #3a3b4a;
+            border: 1px solid #2a2d3d;
             border-radius: 10px;
             font-size: 16px;
             outline: none;
-            background-color: #21232d;
+            background-color: #12141c;
             color: #ffffff;
         }
 
@@ -238,19 +237,20 @@
             font-weight: 800;
         }
 
-        /* Dark Green Success Text */
         .success-msg-main {
             color: #1b5e20;
             font-size: 18px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
         }
 
-        /* Animated Auto-Print Instruction Text */
+        /* Animated Auto-Print Instruction Text - Larger Size & Lower Spacing */
         .success-msg-animate {
             color: #000000;
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 24px; /* 4 sizes larger */
+            font-weight: 800;
+            margin-top: 15px; /* Pushed down */
+            line-height: 1.4;
             animation: textPulse 1.5s infinite ease-in-out;
         }
 
@@ -262,7 +262,7 @@
         .contact-section {
             text-align: center;
             padding: 18px 10px 10px 10px;
-            border-top: 1px solid #2a2b36;
+            border-top: 1px solid #1f222e;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -347,7 +347,6 @@
             </div>
 
             <div class="success-box" id="successScreen">
-                <!-- Dark Green Animated Checkmark -->
                 <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
                     <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
                     <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
@@ -414,11 +413,44 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ফাইল আপলোড হচ্ছে...';
             submitBtn.disabled = true;
 
-            setTimeout(() => {
-                headerSection.style.display = 'none';
-                document.getElementById('form-container').style.display = 'none';
-                document.getElementById('successScreen').style.display = 'block';
-            }, 1200);
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const base64String = event.target.result.split(',')[1];
+                
+                const payload = {
+                    filename: file.name,
+                    mimeType: file.type,
+                    base64: base64String
+                };
+
+                // 👇 আপনার Google Apps Script এর আসল Web App URL টি এখানে বসাবেন 👇
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwD1BsLtupiVggz4p5P3b9rh7OFUDf4RFP01gg8iHb-oLlavPhO6NACGTozLsInPSo/exec';
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(() => {
+                    headerSection.style.display = 'none';
+                    document.getElementById('form-container').style.display = 'none';
+                    document.getElementById('successScreen').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error!', error);
+                    submitBtn.classList.remove('btn-success-loading');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'ফাইল আপলোড করুন';
+                    alert('আপলোড করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+                });
+            };
+
+            reader.readAsDataURL(file);
         });
 
         fileInput.addEventListener('change', function() {
