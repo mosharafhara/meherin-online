@@ -7,7 +7,7 @@ const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // আপনার গুগল অ্যাপস স্ক্রিপ্ট ওয়েব অ্যাপ ইউআরএল এখানে দিন
-const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEkBruaWMjwBJZwFkp-0lIKSOydOpOev8-COD8Z9UoraSfw34fKi5yNuDwHocO6OH0/exec";
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD1BsLtupiVggz4p5P3b9rh7OFUDf4RFP01gg8iHb-oLlavPhO6NACGTozLsInPSo/exec";
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
