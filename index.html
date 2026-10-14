@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEHERIN ONLINE CENTER</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+    .profile-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #36d1dc;
+      margin-bottom: 12px;
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .social-links a {
+      color: #36d1dc;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .social-links a:hover {
+      text-decoration: underline;
+    }
+    .upload-area {
+      border: 2px dashed #444;
+      padding: 25px 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      cursor: pointer;
+      background: #252525;
+    }
+    .upload-area:hover {
+      border-color: #36d1dc;
+    }
+    .btn-submit {
+      background: linear-gradient(90deg, #36d1dc, #5b86e5);
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .btn-submit:hover {
+      opacity: 0.9;
+    }
+    .success-container {
+      display: none;
+    }
+    .check-icon {
+      background-color: #4a2e5c;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px auto;
+      font-size: 28px;
+      color: #d8b4fe;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Header Section -->
+    <img src="profile.jpg" alt="Profile Photo" class="profile-img" onerror="this.src='https://via.placeholder.com/90?text=Logo'">
+    <h2 style="margin: 5px 0 10px 0;">MEHERIN ONLINE CENTER</h2>
+    
+    <div class="social-links">
+      <a href="https://facebook.com/mosharaf.pathan.7" target="_blank">Facebook</a>
+      <a href="https://instagram.com/mosharafpathan" target="_blank">Instagram</a>
+      <a href="https://wa.me/8346042954" target="_blank">WhatsApp</a>
+    </div>
+
+    <!-- Main Upload Form -->
+    <div id="formContainer">
+      <p style="margin-bottom: 5px; font-weight: bold;">আপনার ফাইল এখানে UPLOAD করুন</p>
+      <p style="font-size: 12px; color: #aaa; margin-top: 0;">আপনার ফাইলটি জমা হবার পর অটোমেটিক প্রিন্ট হয়ে যাবে</p>
+
+      <form id="uploadForm">
+        <div class="upload-area" onclick="document.getElementById('fileInput').click();">
+          <input type="file" id="fileInput" required style="display: none;">
+          <label id="fileLabel" style="cursor: pointer;">📁 Choose or Drag & Drop a File</label>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">SUBMIT</button>
+      </form>
+      <div id="status" style="margin-top: 15px; font-size: 14px;"></div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="successContainer" class="success-container">
+      <div class="check-icon">✓</div>
+      <h2 style="margin-bottom: 10px;">ধন্যবাদ</h2>
+      <p style="color: #ccc; font-size: 15px; line-height: 1.5;">একটু ধৈর্য ধরুন আপনার ফাইলটি প্রিন্ট হতে শুরু হয়ে গেছে।</p>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileLabel = document.getElementById('fileLabel');
+    const form = document.getElementById('uploadForm');
+    const status = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    const formContainer = document.getElementById('formContainer');
+    const successContainer = document.getElementById('successContainer');
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileLabel.textContent = `Selected: ${fileInput.files[0].name}`;
+        status.textContent = '';
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        status.textContent = '❌ অনুগ্রহ করে প্রথমে একটি ফাইল সিলেক্ট করুন!';
+        status.style.color = '#ff6b6b';
+        return;
+      }
+
+      status.textContent = 'Uploading... Please wait.';
+      status.style.color = 'yellow';
+      submitBtn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          formContainer.style.display = 'none';
+          successContainer.style.display = 'block';
+        } else {
+          status.textContent = '❌ Upload failed: ' + result.error;
+          status.style.color = '#ff6b6b';
+          submitBtn.disabled = false;
+        }
+      } catch (err) {
+        status.textContent = '❌ Server Error!';
+        status.style.color = '#ff6b6b';
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
