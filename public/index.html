@@ -630,4 +630,56 @@
                 if (progress < 90) {
                     progress += Math.floor(Math.random() * 8) + 3;
                     if (progress > 90) progress = 90;
-                    progressBar.style.width = prog
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = progress + '%';
+                }
+            }, 150);
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const base64String = event.target.result.split(',')[1];
+                
+                const payload = {
+                    filename: file.name,
+                    mimeType: file.type,
+                    base64: base64String
+                };
+
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbwD1BsLtupiVggz4p5P3b9rh7OFUDf4RFP01gg8iHb-oLlavPhO6NACGTozLsInPSo/exec';
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(() => {
+                    clearInterval(progressInterval);
+                    progressBar.style.width = '100%';
+                    progressBar.textContent = '100%';
+
+                    setTimeout(() => {
+                        popupOverlay.style.display = 'flex';
+                    }, 400);
+                })
+                .catch(error => {
+                    console.error('Error!', error);
+                    clearInterval(progressInterval);
+                    progressContainer.style.display = 'none';
+                    submitBtn.classList.remove('btn-success-loading');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'ফাইল আপলোড করুন';
+                    resetBtn.style.display = 'block';
+                    alert('আপলোড করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
