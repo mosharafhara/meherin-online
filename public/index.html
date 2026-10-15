@@ -304,6 +304,7 @@
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
+            margin-top: 10px;
             transition: 0.2s;
         }
 
@@ -534,15 +535,15 @@
                 <div class="printing-text">একটু ধৈর্য্য ধরুন আপনার ফাইলটি অটোমেটিক প্রিন্ট হচ্ছে...</div>
             </div>
 
-            <!-- Action Buttons: Upload Another (Top) & Call (Bottom) -->
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 10px;">
-                <button class="btn-back" id="closePopupBtn">
-                    <i class="fas fa-arrow-left"></i> আরেকটি ফাইল আপলোড করুন
-                </button>
-
+            <!-- Action Buttons: Call & Upload Another -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;">
                 <a href="tel:+918346042954" class="call-btn">
                     <i class="fas fa-phone-alt"></i> ফোন করুন
                 </a>
+
+                <button class="btn-back" id="closePopupBtn">
+                    <i class="fas fa-arrow-left"></i> আরেকটি ফাইল আপলোড করুন
+                </button>
             </div>
 
         </div>
@@ -629,5 +630,4 @@
                 if (progress < 90) {
                     progress += Math.floor(Math.random() * 8) + 3;
                     if (progress > 90) progress = 90;
-                    progressBar.style.width = progress + '%';
-   
+                    progressBar.style.width = prog
