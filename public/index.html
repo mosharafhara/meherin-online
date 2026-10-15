@@ -253,6 +253,7 @@
         }
 
         .popup-card {
+            position: relative;
             width: 100%;
             max-width: 480px;
             background: #07080b;
@@ -262,6 +263,53 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
             text-align: center;
             padding-bottom: 20px;
+        }
+
+        /* Popup Close Button (Top Right Cross Icon) */
+        .popup-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+            background: #e91e63;
+            border-color: #e91e63;
+        }
+
+        /* Back Button inside Popup */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #2a2d3d;
+            color: #ffffff;
+            border: 1px solid #2196f3;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover {
+            background: #2196f3;
+            color: #ffffff;
         }
 
         /* White Background Box for Thanks Message */
@@ -457,10 +505,15 @@
         </div>
     </div>
 
-    <!-- Popup Modal (Only Banner, Success Message, Printing Box & Call Button) -->
+    <!-- Popup Modal -->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-card">
             
+            <!-- Close Cross Button -->
+            <button class="popup-close-btn" id="closePopupIconBtn" title="বন্ধ করুন">
+                <i class="fas fa-times"></i>
+            </button>
+
             <!-- Banner Kept -->
             <div class="top-banner">
                 <img src="banner.jpg" alt="Meherin Online Center Banner" onerror="this.style.display='none'">
@@ -481,8 +534,12 @@
                 <div class="printing-text">একটু ধৈর্য্য ধরুন আপনার ফাইলটি অটোমেটিক প্রিন্ট হচ্ছে...</div>
             </div>
 
-            <!-- Call Button Only -->
-            <div style="text-align: center; margin-top: 10px;">
+            <!-- Action Buttons: Upload Another (Top) & Call (Bottom) -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 10px;">
+                <button class="btn-back" id="closePopupBtn">
+                    <i class="fas fa-arrow-left"></i> আরেকটি ফাইল আপলোড করুন
+                </button>
+
                 <a href="tel:+918346042954" class="call-btn">
                     <i class="fas fa-phone-alt"></i> ফোন করুন
                 </a>
@@ -501,6 +558,30 @@
         const progressContainer = document.getElementById('progressContainer');
         const progressBar = document.getElementById('progressBar');
         const popupOverlay = document.getElementById('popupOverlay');
+        const closePopupBtn = document.getElementById('closePopupBtn');
+        const closePopupIconBtn = document.getElementById('closePopupIconBtn');
+
+        // Reset form function
+        function resetUploadForm() {
+            fileInput.value = '';
+            resetBtn.style.display = 'none';
+            progressContainer.style.display = 'none';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-success-loading');
+            submitBtn.innerHTML = 'ফাইল আপলোড করুন';
+        }
+
+        // Close popup function
+        function closePopup() {
+            popupOverlay.style.display = 'none';
+            resetUploadForm();
+        }
+
+        // Event listeners for closing popup
+        closePopupBtn.addEventListener('click', closePopup);
+        closePopupIconBtn.addEventListener('click', closePopup);
 
         fileInput.addEventListener('change', function() {
             if (fileInput.files.length > 0) {
@@ -512,16 +593,7 @@
             }
         });
 
-        resetBtn.addEventListener('click', function() {
-            fileInput.value = '';
-            resetBtn.style.display = 'none';
-            progressContainer.style.display = 'none';
-            progressBar.style.width = '0%';
-            progressBar.textContent = '0%';
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('btn-success-loading');
-            submitBtn.innerHTML = 'ফাইল আপলোড করুন';
-        });
+        resetBtn.addEventListener('click', resetUploadForm);
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -558,55 +630,4 @@
                     progress += Math.floor(Math.random() * 8) + 3;
                     if (progress > 90) progress = 90;
                     progressBar.style.width = progress + '%';
-                    progressBar.textContent = progress + '%';
-                }
-            }, 150);
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(event) {
-                const base64String = event.target.result.split(',')[1];
-                
-                const payload = {
-                    filename: file.name,
-                    mimeType: file.type,
-                    base64: base64String
-                };
-
-                const scriptURL = 'https://script.google.com/macros/s/AKfycbwD1BsLtupiVggz4p5P3b9rh7OFUDf4RFP01gg8iHb-oLlavPhO6NACGTozLsInPSo/exec';
-
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(() => {
-                    clearInterval(progressInterval);
-                    progressBar.style.width = '100%';
-                    progressBar.textContent = '100%';
-
-                    setTimeout(() => {
-                        popupOverlay.style.display = 'flex';
-                    }, 400);
-                })
-                .catch(error => {
-                    console.error('Error!', error);
-                    clearInterval(progressInterval);
-                    progressContainer.style.display = 'none';
-                    submitBtn.classList.remove('btn-success-loading');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'ফাইল আপলোড করুন';
-                    resetBtn.style.display = 'block';
-                    alert('আপলোড করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
-                });
-            };
-
-            reader.readAsDataURL(file);
-        });
-    </script>
-</body>
-</html>
+   
