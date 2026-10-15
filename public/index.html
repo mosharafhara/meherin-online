@@ -14,7 +14,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Matched exactly with the attached banner background tone */
         body {
             background-color: #07080b;
             color: #ffffff;
@@ -36,7 +35,7 @@
 
         .container {
             width: 100%;
-            background: #07080b; /* Perfectly matched background */
+            background: #07080b;
             border-radius: 18px;
             overflow: hidden;
             text-align: center;
@@ -70,7 +69,6 @@
             object-fit: cover;
         }
 
-        /* Header Section perfectly color-matched with banner */
         .header-section {
             background: #07080b;
             padding: 20px 15px 15px 15px;
@@ -182,6 +180,27 @@
             align-items: center;
             gap: 10px;
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+            margin-bottom: 12px;
+        }
+
+        .btn-reset {
+            display: none;
+            width: 100%;
+            background: #2a2d3d;
+            color: #ffcc00;
+            border: 1px solid #ffcc00;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: #ffcc00;
+            color: #07080b;
         }
 
         .btn-success-loading {
@@ -193,20 +212,71 @@
             background: linear-gradient(90deg, #d32f2f, #f44336) !important;
         }
 
-        /* Success Screen Styling */
-        .success-box {
+        /* Progress Bar Styling */
+        .progress-container {
             display: none;
+            margin-bottom: 15px;
+            background: #12141c;
+            border: 1px solid #2a2d3d;
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 3px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 22px;
+            background: linear-gradient(90deg, #00e5ff, #2196f3);
+            border-radius: 8px;
             text-align: center;
-            padding: 35px 20px;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 22px;
+            color: #ffffff;
+            transition: width 0.2s ease;
+        }
+
+        /* Popup Overlay and Inner Screen Styling */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 10px;
+            overflow-y: auto;
+        }
+
+        .popup-card {
+            width: 100%;
+            max-width: 480px;
+            background: #07080b;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 2px solid #2196f3;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+            text-align: center;
+        }
+
+        /* White Background Box for Thanks Message */
+        .white-success-box {
             background-color: #ffffff;
+            color: #1b5e20;
+            padding: 25px 20px;
+            margin: 20px 15px 15px 15px;
             border-radius: 12px;
-            margin: 25px 20px;
+            border: 2px solid #1b5e20;
         }
 
         .checkmark-svg {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 15px;
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 10px;
         }
 
         .checkmark-circle {
@@ -231,27 +301,34 @@
             100% { stroke-dashoffset: 0; }
         }
 
-        .success-box h2 {
+        .white-success-box h2 {
             color: #1b5e20;
-            font-size: 32px;
-            margin-bottom: 12px;
+            font-size: 30px;
+            margin-bottom: 8px;
             font-weight: 800;
         }
 
-        .success-msg-main {
+        .white-success-box .popup-msg-main {
             color: #1b5e20;
             font-size: 18px;
             font-weight: 700;
-            margin-bottom: 15px;
+            line-height: 1.4;
         }
 
-        /* Much larger, bolder and lower text styling */
-        .success-msg-animate {
-            color: #000000;
-            font-size: 28px; /* Extremely clear and big */
-            font-weight: 900; /* Extra bold */
-            margin-top: 20px; /* Lower spacing */
-            line-height: 1.3;
+        .printing-box {
+            background: #1a1f2c;
+            border: 2px solid #2196f3;
+            padding: 18px;
+            margin: 0 15px 20px 15px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .printing-text {
+            color: #ffcc00;
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.4;
             animation: textPulse 1.5s infinite ease-in-out;
         }
 
@@ -324,7 +401,7 @@
                 <img src="banner.jpg" alt="Meherin Online Center Banner" onerror="this.style.display='none'">
             </div>
 
-            <div class="header-section" id="headerSection">
+            <div class="header-section">
                 <div class="circle-logo-container">
                     <img src="profile.jpg" alt="User Photo" onerror="this.src='banner.jpg'; this.onerror=null;">
                 </div>
@@ -342,20 +419,18 @@
                     <div class="form-group">
                         <label for="file">ফাইল নির্বাচন করুন (Select File):</label>
                         <input type="file" id="file">
+                        <button type="button" id="resetBtn" class="btn-reset">
+                            <i class="fas fa-redo"></i> ফাইল পরিবর্তন করুন
+                        </button>
+                    </div>
+
+                    <!-- Animated Progress Bar -->
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar">0%</div>
                     </div>
 
                     <button type="submit" class="btn-submit" id="submitBtn">ফাইল আপলোড করুন</button>
                 </form>
-            </div>
-
-            <div class="success-box" id="successScreen">
-                <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                </svg>
-                <h2>ধন্যবাদ!</h2>
-                <div class="success-msg-main">আপনার ফাইলটি সফলভাবে জমা হয়ে গেছে।</div>
-                <div class="success-msg-animate">একটু ধৈর্য্য ধরুন আপনার ফাইলটি অটোমেটিক প্রিন্ট হচ্ছে...</div>
             </div>
 
             <div class="contact-section">
@@ -381,13 +456,74 @@
         </div>
     </div>
 
+    <!-- Popup Modal with Full Banner & White Background Box -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-card">
+            
+            <div class="top-banner">
+                <img src="banner.jpg" alt="Meherin Online Center Banner" onerror="this.style.display='none'">
+            </div>
+
+            <div class="header-section">
+                <div class="circle-logo-container">
+                    <img src="profile.jpg" alt="User Photo" onerror="this.src='banner.jpg'; this.onerror=null;">
+                </div>
+                <h1>MEHERIN ONLINE CENTER</h1>
+            </div>
+
+            <div class="white-success-box">
+                <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+                <h2>ধন্যবাদ!</h2>
+                <div class="popup-msg-main">আপনার ফাইলটি সফলভাবে জমা হয়ে গেছে।</div>
+            </div>
+
+            <div class="printing-box">
+                <div class="printing-text">একটু ধৈর্য্য ধরুন আপনার ফাইলটি অটোমেটিক প্রিন্ট হচ্ছে...</div>
+            </div>
+
+            <div class="contact-section">
+                <a href="tel:+918346042954" class="call-btn">
+                    <i class="fas fa-phone-alt"></i> ফোন করুন
+                </a>
+            </div>
+
+        </div>
+    </div>
+
     <script>
         const form = document.getElementById('uploadForm');
         const fileInput = document.getElementById('file');
         const errorBox = document.getElementById('errorBox');
         const mainContainer = document.getElementById('mainContainer');
         const submitBtn = document.getElementById('submitBtn');
-        const headerSection = document.getElementById('headerSection');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const popupOverlay = document.getElementById('popupOverlay');
+
+        fileInput.addEventListener('change', function() {
+            if (fileInput.files.length > 0) {
+                errorBox.style.display = 'none';
+                fileInput.classList.remove('error-border');
+                resetBtn.style.display = 'block';
+            } else {
+                resetBtn.style.display = 'none';
+            }
+        });
+
+        resetBtn.addEventListener('click', function() {
+            fileInput.value = '';
+            resetBtn.style.display = 'none';
+            progressContainer.style.display = 'none';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-success-loading');
+            submitBtn.innerHTML = 'ফাইল আপলোড করুন';
+        });
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -410,10 +546,23 @@
 
             errorBox.style.display = 'none';
             fileInput.classList.remove('error-border');
+            resetBtn.style.display = 'none';
 
             submitBtn.classList.add('btn-success-loading');
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ফাইল আপলোড হচ্ছে...';
             submitBtn.disabled = true;
+
+            progressContainer.style.display = 'block';
+            let progress = 0;
+            
+            const progressInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += Math.floor(Math.random() * 8) + 3;
+                    if (progress > 90) progress = 90;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = progress + '%';
+                }
+            }, 150);
 
             const file = fileInput.files[0];
             const reader = new FileReader();
@@ -427,7 +576,6 @@
                     base64: base64String
                 };
 
-                // 👇 আপনার Google Apps Script এর আসল Web App URL টি এখানে বসাবেন 👇
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbwD1BsLtupiVggz4p5P3b9rh7OFUDf4RFP01gg8iHb-oLlavPhO6NACGTozLsInPSo/exec';
 
                 fetch(scriptURL, {
@@ -439,27 +587,27 @@
                     body: JSON.stringify(payload)
                 })
                 .then(() => {
-                    headerSection.style.display = 'none';
-                    document.getElementById('form-container').style.display = 'none';
-                    document.getElementById('successScreen').style.display = 'block';
+                    clearInterval(progressInterval);
+                    progressBar.style.width = '100%';
+                    progressBar.textContent = '100%';
+
+                    setTimeout(() => {
+                        popupOverlay.style.display = 'flex';
+                    }, 400);
                 })
                 .catch(error => {
                     console.error('Error!', error);
+                    clearInterval(progressInterval);
+                    progressContainer.style.display = 'none';
                     submitBtn.classList.remove('btn-success-loading');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'ফাইল আপলোড করুন';
+                    resetBtn.style.display = 'block';
                     alert('আপলোড করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
                 });
             };
 
             reader.readAsDataURL(file);
-        });
-
-        fileInput.addEventListener('change', function() {
-            if (fileInput.files.length > 0) {
-                errorBox.style.display = 'none';
-                fileInput.classList.remove('error-border');
-            }
         });
     </script>
 </body>
